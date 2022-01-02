@@ -12,7 +12,7 @@ This file has to be setup at the start of the project
 """
 import subprocess as sp 
 
-ProjectHomeDir = "/Users/Harsh 1/Documents/Github/SphericalRollingRobots/"
+ProjectHomeDir = "/Users/Harsh 1/Documents/Github/SphericalRollingRobot/"
 
 # Generated Folder Path: 
 GenDir = ProjectHomeDir + "/Generated/"
