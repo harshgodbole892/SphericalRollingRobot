@@ -1,0 +1,59 @@
+/*
+ <<<<<<<<<<<<<<< Multi-body Dynamics Simualtion, Estimation and Control Lab - McGill University >>>>>>>>>>>>>>
+ 
+ 
+ Hierarchy     : Cable Driven Parallel Robots
+ Model         : 1 DOF Flexible Cable
+ Function Name : Example12a
+ Function Type : Dynamic Simulation
+ 
+ Description   : The following function contains dynamic sumulation of a
+                 single DOF constrained CDPR.
+ 
+ Example-L-0-1 is named using the following convention:
+ L - Lumped-mass model type
+ 0 - Dynamics simulation
+ 1 - Variable mass/stiffness lumped-mass method.
+ 
+ Revisions: 
+ 
+ 2017-09-06: Template creation
+ 
+ Function Details:
+ 
+ Information on addtional functionality can be added here.
+ 
+ References:
+ 
+ [1] Dynamic Modelling and Control of Cable-actuated systems, Harsh Godbole, Master's Thesis, McGill University, 2017.
+ 
+ Armadillo documentation is available at:
+ http://arma.sourceforge.net/docs.html
+ 
+ Tempelate by Harsh Godbole.
+ Reference credits to Dr. James Richard Forbes and Ryan Caverly.
+ 
+ */
+#include "L01Constants.hpp"
+#include "L01Energy.hpp"
+
+//Function definations for ODE Energy function starts here:
+
+//Main PD Feedback and Feed Forward control law
+double energy (vec       r_a_zw,
+               mat       C_ba,
+               vec       v_a_zw_a,
+               vec       omega_b_ba,
+               constants cst)
+{
+    double E;
+    
+    // You must fill this in!
+    E =   (0.5 * (cst.mB) * ((v_a_zw_a).t()) * (v_a_zw_a))
+        - (((v_a_zw_a).t()) * ((C_ba).t()) * cross(cst.c_b_Bz) * (omega_b_ba))
+        + (0.5 * ((omega_b_ba).t()) * (cst.J_b_Bz) * (omega_b_ba))
+        - ( ((cst.c_b_Bz).t()) * (C_ba) * (cst.g_a))
+        - ( (cst.mB) * (cst.g_a.t()) * (r_a_zw));
+    
+    return E;
+}
