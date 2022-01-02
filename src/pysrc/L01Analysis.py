@@ -13,8 +13,8 @@ from src.pysrc.L01CppRunner import L01CppRunner as CppR
 from src.pysrc.L01LoadData  import L01DataArray as DatArr
 from src.pysrc.L01Animate   import L01Animate
 
-Build   = 0
-Run     = 0
+Build   = 1
+Run     = 1
 Load    = 1
 Plot    = 1
 Animate = 0

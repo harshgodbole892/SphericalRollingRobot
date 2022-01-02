@@ -40,6 +40,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define DYNAMIC_PARAMETER_LOAD
 // Project Specific includes:
 #include "L01Constants.hpp"
 #include "L01ODE.hpp"
@@ -49,6 +50,7 @@
 
 using namespace std;
 using namespace arma;
+
 
 //17. Main Function
 int main(int argc, char** argv) {
@@ -63,6 +65,7 @@ int main(int argc, char** argv) {
     
     // Get generated directory path and dump files in correct location
     std::string RelGenPath("/Generated/");
+    std::string RelParametersPath("/Parameters/");
     std::string ProjectHomeDir("");
     
     // Check that getenv has not returned a NULL pointer:
@@ -78,10 +81,11 @@ int main(int argc, char** argv) {
     
         //std::string ProjectHomeDir = getenv("PROJECT_HOME_DIR");
         std::string GenDir(ProjectHomeDir + RelGenPath);
+        std::string ParametersDir(ProjectHomeDir + RelParametersPath);
     
         // Initializing constants parameters class
         cout<<"Loading Constants "<<endl;
-        constants cst(GenDir);
+        constants cst(GenDir, ParametersDir);
         cout<<"Constants Loaded "<<endl;
         
         
@@ -113,18 +117,39 @@ int main(int argc, char** argv) {
         x_IC(26) = 147.15;               // H_IC = 147.5
         
         
+        // Load from constants file
+#ifdef DYNAMIC_PARAMETER_LOAD
+        x_IC.load(ParametersDir + "x_IC.csv" , csv_ascii);
+#endif
+        x_IC.save(GenDir + "x_IC.csv" , csv_ascii);
+        
         //
         // -------------------------------------
         // Step 02 : Set Simulation Parameters:
         // -------------------------------------
         //
         
+        // Initialize Integrator
+        vec IntegratorParams(3);
         
-	    double
-	    t_start = 0,          // Start time in seconds
-	    t_end   = 20,          //4      // End time in seconds
-	    h       = 0.001;    //0.0001   // Step Size in seconds
-    
+        IntegratorParams(0) = 0,          // Start time in seconds
+        IntegratorParams(1) = 20,         // End time in seconds
+        IntegratorParams(2) = 0.001;      // Step Size in seconds
+        
+        // Load from constants file and save used constants
+#ifdef DYNAMIC_PARAMETER_LOAD
+        IntegratorParams.load(ParametersDir + "IntegratorParams.csv" , csv_ascii);
+#endif
+        IntegratorParams.save(GenDir + "IntegratorParams.csv" , csv_ascii);
+        
+        double t_start  = IntegratorParams(0);  // Start time in seconds
+        double t_end    = IntegratorParams(1);  // End time in seconds
+        double h        = IntegratorParams(2);  // Step Size in seconds
+            
+        // IntegratorParams.save(GenDir + "IntegratorParams.csv" , csv_ascii);
+        
+        // Assign output vector:
+        
 	    long long int a = (t_end - t_start) / h; //Need better counting Subroutine
 	    cout << "C++ : Number of Iterations Estimated "<<a<<endl;
 	    mat x_out=zeros<mat>(x_length_1, a);

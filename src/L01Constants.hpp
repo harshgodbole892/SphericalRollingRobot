@@ -57,6 +57,7 @@ public:
     
     // Exe Globals:
     string GenDir;
+    string ParametersDir;
     
     // Gravitational Constants:
     vec    g_i; //gravitational accel, m/s/s
@@ -100,7 +101,13 @@ public:
     vec unit_col_3;
     
     // Constructor:
-    constants(std::string EnvGenDir);
+    constants(std::string EnvGenDir, std::string EnvParametersDir);
+    
+    // Internal functions:
+    void initializeGlobalConstants(std::string EnvGenDir, std::string EnvParametersDir);
+    void initializeModelConstants();
+    void saveConstants();
+    void loadConstants();
 
 };
 
