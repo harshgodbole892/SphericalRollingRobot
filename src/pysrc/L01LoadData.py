@@ -9,13 +9,12 @@ import os
 import numpy             as np
 import matplotlib.pyplot as plt 
 import config.L01Env     as Env
-from src.pysrc.PlotWindow import plotWindow
+
 
 # Plot script here: 
 class L01DataArray: 
     
     data = {} 
-    pltWin = plotWindow()
     
     def populateResults(self):
         
@@ -43,7 +42,7 @@ class L01DataArray:
         plt.xlabel(name1)
         plt.ylabel(name2)
         plt.grid(True)
-        plt.close()
+        plt.show()
         return f
         
     # Constructor loads all data from the generated folder
@@ -57,25 +56,26 @@ class L01DataArray:
                 
         for  variable in self.data:
             if (len(self.data[variable].shape) < 2):
-                f = self.Plot2D(self.data["t"], self.data[variable] , "time", variable)
-                self.pltWin.addPlot(" Variable : " + variable, f)
-        plt.close()
-        self.pltWin.show();
-        
+                self.Plot2D(self.data["t"], self.data[variable] , "time", variable)
+                       
     #Specific plots: 
     def PlotCustom(self):
         
-        f = plt.figure(1)
+       # pltWin = plotWindow()
+          
+        plt.figure(1)
         plt.grid(True)
         plt.plot(self.data["t"], self.data["H"], color='k')
         plt.ylabel(" Hameltonian")
         plt.xlabel("time")
+        plt.title("Hameltonian")
         
         plt.figure(2)
         plt.grid(True)
         plt.plot(self.data["t"], self.data["del_E"], color='k')
         plt.ylabel(" Del Energy with external force")
         plt.xlabel("time")
+        plt.title("Del E")
         
         plt.figure(3)
         plt.grid(True)
@@ -84,14 +84,17 @@ class L01DataArray:
         plt.plot(self.data["t"], self.data["det_C_p2i"], color='c')
         plt.ylabel(" Determinant of DCMs")
         plt.xlabel("time")
-
+        plt.title("DCMs")
+        
         plt.figure(4)
         plt.grid(True)
         plt.plot(self.data["t"], self.data["v_i_si_i"][0], color='k')
         plt.plot(self.data["t"], self.data["v_i_si_i"][1], color='r')
         plt.plot(self.data["t"], self.data["v_i_si_i"][2], color='c')
         plt.ylabel(" V_i_si_i")
-        plt.xlabel("time")     
+        plt.xlabel("time")
+        plt.title("V_i_si_i 1")
+        
         
         plt.figure(5)
         plt.grid(True)
@@ -100,6 +103,8 @@ class L01DataArray:
         plt.plot(self.data["t"], self.data["omega_i_p2i"][0], color='c')
         plt.ylabel(" Omega_i_xi [0]")
         plt.xlabel("time")   
+        plt.title("Omega_i_xi 0")
+                
         
         plt.figure(6)
         plt.grid(True)
@@ -108,19 +113,15 @@ class L01DataArray:
         plt.plot(self.data["t"], self.data["omega_i_p2i"][1], color='c')
         plt.ylabel(" Omega_i_xi [1]")
         plt.xlabel("time")  
+        plt.title("Omega_i_xi 1")
         
         plt.figure(7)
         plt.grid(True)
         plt.plot(self.data["t"], self.data["omega_i_si"][2], color='k')
         plt.plot(self.data["t"], self.data["omega_i_p1i"][2], color='r')
         plt.plot(self.data["t"], self.data["omega_i_p2i"][2], color='c')
+        plt.ylabel(" Omega_i_xi [2]")
         plt.xlabel("time")  
+        plt.title("Omega_i_xi 2")
         
-        # Show all plots 
         plt.show()
-        
-        
-
-
-#plt.figure()
-#plt.plot(rho,H)
